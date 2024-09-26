@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import InvoiceManagement from './components/InvoiceManagement';
+import TaxFiling from './components/TaxFiling';
+import Reports from './components/Reports';
+import Navbar from './components/Navbar';
+import { ApiProvider } from './context/ApiContext';
 
-function App() {
+function App(){
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApiProvider> 
+      <Router>
+        <Navbar/>
+        <Routes>
+          <Route path="/" exact Component={Dashboard} />
+          <Route path="/invoices" Component={InvoiceManagement} />
+          <Route path="/tax-filling" Component={TaxFiling} />
+          <Route path="reports" Component={Reports} />
+        </Routes>
+      </Router>
+      </ApiProvider>
   );
 }
 
 export default App;
+
