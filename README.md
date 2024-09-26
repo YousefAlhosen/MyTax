@@ -13,3 +13,16 @@ TaxPayApp is designed to simplify the tax payment process for startup companies 
 1. Clone the repository:
    ```bash
    git clone https://github.com/YousefAlhosen/MyTax.git
+
+## License
+- ## This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+- ## We are always looking to improve TaxPayApp. If you have suggestions, or bug fixes, or would like to add new       
+     features, feel free to fork the repo and submit a pull request!
+
+## Feedback
+- ## Your feedback is invaluable! Reach out with your thoughts or questions at yousef.alhosen94@gmail.com
+
+
+
