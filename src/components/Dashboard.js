@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import axios from 'axios';
 import { Line} from 'react-chartjs-2';
+import useApi from "../hooks/useApi";
 import {
     Chart as ChartJS,
     LineElement,
@@ -9,9 +9,7 @@ import {
     LineController,
     Title,
     Tooltip,
-    Legend,
-    plugins,
-    Interaction
+    Legend
 } from 'chart.js';
 
 // Register necessary elements
@@ -22,54 +20,51 @@ ChartJS.register(LineElement, PointElement, LinearScale, LineController, Title, 
 
 
 const Dashboard = () => {
-    const [financialSummary, setFinancialSummary] = useState({ income: 0, expenses: 0});
+    const {data, error, loading, apiCall} = useApi();
+    const [financialSummary, setFinancialSummary] = useState({ income: null, expenses: null});
     const [chartData, setChartData] = useState({});
 
-      // Mock data for testing
-    const mockData = {
-        income: 5000,
-        expenses: 3000,
-        incomeHistory: [1000, 1200, 1500, 1800, 2000], // Sample data for income history
-        expenseHistory: [800, 900, 950, 1100, 1200], // Sample data for expense history
-    };
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            await apiCall('/api/dashboard');
+        };
+        fetchDashboardData();
+        const interval = setInterval(fetchDashboardData, 10000);
+        return () => clearInterval(interval)
+    }, [apiCall]); 
 
     useEffect(() => {
-        //Fetch financial summary from backend
-        /*axios.get('/api/financial-summary')
-            .then(response => { */
-                const { income, expenses, incomeHistory, expenseHistory } = mockData;
+        // If the data has been fetched, update the state
+        if (data && Object.keys(data).length > 0 ){
+            console.log('Fetched Data: ', data);
+            const { income, expenses, incomeHistory, expenseHistory } = data;
 
-                if (incomeHistory && expenseHistory) {
-                    setFinancialSummary({income, expenses});
-                    setChartData({
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                        datasets: [
-                            {
-                                label: 'Income',
-                                data: incomeHistory || [] ,
-                                borderColor: 'green',
-                                fill: false,
+            if (incomeHistory && expenseHistory) {
+                setFinancialSummary({income, expenses});
+                setChartData({
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: incomeHistory || [] ,
+                            borderColor: 'green',
+                            fill: false,
                                 
-                            },
-                            {
-                                label: 'Expenses',
-                                data: expenseHistory || [],
-                                borderColor: 'red',
-                                fill: false,
-                            }
-                        ]
-                    });
+                        },
+                        {
+                            label: 'Expenses',
+                            data: expenseHistory || [],
+                            borderColor: 'red',
+                            fill: false,
+                        }
+                    ]
+                });
 
-                } else {
-                    console.error('Data format is not correct or incomplete');
-                }
-
-                
-          /*  })
-            .catch(error => {
-                console.error('Error fetching financial summary:', error);
-            });   */
-    }, []);
+            } else {
+                console.error('Data format is not correct or incomplete');
+            }
+        }
+    }, [data]);  // update state when data changes
 
     const chartOptiosn = {
         responsive : true,
@@ -93,6 +88,8 @@ const Dashboard = () => {
     return (
         <div>
             <h1>Dashboard</h1>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
             <div className="summary">
                 <h2>Income: {financialSummary.income}</h2>
                 <h2>Expenses: {financialSummary.expenses}</h2>
@@ -106,7 +103,6 @@ const Dashboard = () => {
                 )}
             </div>
         </div>
-
     );
 
 
