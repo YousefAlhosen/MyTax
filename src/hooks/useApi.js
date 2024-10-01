@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
 
-const useApi = (initialState = {}) => {
+const useApi = (initialState) => {
     const [data, setData] = useState(initialState);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -19,8 +19,9 @@ const useApi = (initialState = {}) => {
                 data: payload,
             });
             setData(response.data);
+            return response.data;
         } catch (err) {
-            setError(err.message  || 'An error occurred' );
+            setError(err);
         } finally {
             setLoading(false);
         }

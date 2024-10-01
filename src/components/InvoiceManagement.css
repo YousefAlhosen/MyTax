@@ -1,0 +1,50 @@
+/* Styling for Invoice Management cards */
+.invoice-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .invoice-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .invoice-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .status-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  
+  .status-badge.pending {
+    background-color: #ffcc00;
+    color: #000;
+  }
+  
+  .status-badge.paid {
+    background-color: #4caf50;
+    color: #fff;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
