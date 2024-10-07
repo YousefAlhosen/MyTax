@@ -1,3 +1,5 @@
+using BackendAPI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,6 +18,9 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddScoped<ITaxService, TaxService>();
+
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -27,10 +32,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 // USe CORS middleware
 app.UseCors("AllowFrontend");
+app.UseAuthorization();
 
 app.MapControllers();
 
